@@ -3,7 +3,7 @@ package com.example.springbootdemo.controllers;
 
 import com.example.springbootdemo.models.Post;
 import com.example.springbootdemo.models.User;
-import com.example.springbootdemo.servies.IUserService;
+import com.example.springbootdemo.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api")
 public class UserController {
 
     @Autowired
     private IUserService userService;
+    //design patter singleton
 
-    @GetMapping(value="/users")
+    @RequestMapping(value = "/user", method = RequestMethod.GET) // tương tự cái dưới
+//    @GetMapping(value = "/user")
     public ResponseEntity<?> getUser() {
         Optional<User> user = userService.findById(1L);
         if(user.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+            //design pattern builder
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -41,6 +44,9 @@ public class UserController {
 
     @PostMapping(value="/users")
     public ResponseEntity<?> createUser(@RequestBody User user) {
+        //nguoi dung truyen len mot so thong tin co ban
+        //tuy nhien doi tuong user se khong day du, vi vay tao them post va set vao phan con thieu
+        // coi nhu la du lieu mac dinh
         Post post = new Post();
         post.setTitle("title");
         post.setUser(user);

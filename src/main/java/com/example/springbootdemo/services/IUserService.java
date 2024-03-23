@@ -1,4 +1,4 @@
-package com.example.springbootdemo.servies;
+package com.example.springbootdemo.services;
 
 import com.example.springbootdemo.models.User;
 
